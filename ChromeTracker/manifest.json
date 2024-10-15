@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "Chrome Time Tracker",
+    "description": "Remote tracker for the TimeTracker",
+    "version": "0.1",
+    "permissions": [
+        "tabs"
+    ],
+    "host_permissions": [
+        "http://localhost:7138/"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
+}

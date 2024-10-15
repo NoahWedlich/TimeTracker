@@ -1,0 +1,10 @@
+**/.vs/
+**/.vscode/
+TimeTracker/TimeTracker
+TimeTracker/x64/
+**/*.log
+**/*.tte
+**/*.ttr
+**/*.user
+**/__pycache__/
+**/node_modules/
