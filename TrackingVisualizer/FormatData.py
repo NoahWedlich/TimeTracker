@@ -1,5 +1,5 @@
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Union
 
 from TTRFile import TTRFile
@@ -122,5 +122,7 @@ def format_data(path: str) -> list[tuple[str, str, datetime, datetime]]:
             
             
     events = [event for event in events if event[0] != "Runtime" and event[0] != "Activity"] # Comment this line to include runtime events
+    
+    total_runtime = sum([event[3] - event[2] for event in events if event[0] == "Runtime"], timedelta())
     
     return events

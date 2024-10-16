@@ -67,6 +67,14 @@ def display_piechart(path: str):
     combined_values = application_values + website_values + vscode_projects_values
     combined_customdata = [seconds_to_time(value) for value in combined_values]
     
+    total_duration = sum(combined_values)
+    threshold = 0.004 * total_duration
+    
+    combined_labels = [label for label, value in zip(combined_labels, combined_values) if value > threshold]
+    combined_parents = [parent for parent, value in zip(combined_parents, combined_values) if value > threshold]
+    combined_customdata = [customdata for customdata, value in zip(combined_customdata, combined_values) if value > threshold]
+    combined_values = [value for value in combined_values if value > threshold]
+    
     fig = go.Figure(go.Sunburst(
         labels=combined_labels,
         parents=combined_parents,
