@@ -2,15 +2,15 @@
 
 LogLevel Logger::_log_level = LogLevel::LOG_INFO;
 
-std::string Logger::_file_path = "";
+std::wstring Logger::_file_path = L"";
 
 std::mutex Logger::_mutex{};
 
-void Logger::set_file_path(const std::string& file_path)
+void Logger::set_file_path(const std::wstring& file_path)
 {
 	_file_path = file_path;
 
-	DEBUG_LOG_LINE("Logger file path set to: " + _file_path);
+	std::wcout << "Logger file path set to: " << _file_path << std::endl;
 }
 
 void Logger::set_log_level(LogLevel level)

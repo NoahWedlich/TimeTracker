@@ -137,6 +137,7 @@
     <ClInclude Include="src\Database\TTEFile.h" />
     <ClInclude Include="src\Core\SystemTimeTracker.h" />
     <ClInclude Include="src\Database\TTRFile.h" />
+    <ClInclude Include="src\Utils\PathProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\ActivityMonitor.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="src\Database\TTEFile.cpp" />
     <ClCompile Include="src\Core\SystemTimeTracker.cpp" />
     <ClCompile Include="src\Database\TTRFile.cpp" />
+    <ClCompile Include="src\Utils\PathProvider.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

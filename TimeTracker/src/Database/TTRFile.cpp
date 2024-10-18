@@ -1,6 +1,6 @@
 #include "TTRFile.h"
 
-TTRFile::TTRFile(const std::string& file_path)
+TTRFile::TTRFile(const std::wstring& file_path)
 	: _file_path(file_path), _file()
 {
 }
@@ -198,7 +198,7 @@ bool TTRFile::_open()
 
 	if (!_file.is_open())
 	{
-		Logger::log_error("Failed to open file: {}", _file_path);
+		Logger::log_error("Failed to open file: {}", (char*)_file_path.c_str());
 		return false;
 	}
 
@@ -211,7 +211,7 @@ bool TTRFile::_close()
 
 	if (_file.is_open())
 	{
-		Logger::log_error("Failed to close file: {}", _file_path);
+		Logger::log_error("Failed to close file: {}", (char*)_file_path.c_str());
 		return false;
 	}
 
@@ -220,11 +220,19 @@ bool TTRFile::_close()
 
 bool TTRFile::_create()
 {
+	if (!std::filesystem::exists(_file_path))
+	{
+		std::filesystem::create_directories(std::filesystem::path(_file_path).parent_path());
+	}
+
 	_file.open(_file_path, std::ios::out | std::ios::binary);
 
 	if (!_file.is_open())
 	{
-		Logger::log_error("Failed to create file: {}", _file_path);
+		char error_buffer[256];
+		strerror_s(error_buffer, 256, errno);
+
+		Logger::log_error("Failed to create file: {}", error_buffer);
 		return false;
 	}
 
@@ -294,60 +302,4 @@ bool TTRFile::_update_header()
 	_file.write(reinterpret_cast<const char*>(&_offset_to_entities), sizeof(_offset_to_entities));
 
 	return true;
-}
-
-
-// DomainIterator
-
-const TTRFile::Domain TTRFile::DomainIterator::operator*() const
-{
-	_ttr_file->_file.seekg(_offset_to_current_entry);
-
-	uint8_t len;
-	_ttr_file->_file.read(reinterpret_cast<char*>(&len), sizeof(len));
-
-	std::string name(len, '\0');
-	_ttr_file->_file.read(name.data(), len);
-
-	return TTRFile::Domain((TTRFile::domain_id)_current_entry, name);
-}
-
-TTRFile::DomainIterator& TTRFile::DomainIterator::operator++()
-{
-	if (_current_entry >= _num_of_entries)
-	{
-		return *this;
-	}
-
-	_ttr_file->_file.seekg(_offset_to_current_entry);
-
-	uint8_t len;
-	_ttr_file->_file.read(reinterpret_cast<char*>(&len), sizeof(len));
-
-	_offset_to_current_entry += sizeof(len) + len;
-
-	_current_entry++;
-
-	return *this;
-}
-
-TTRFile::DomainIterator TTRFile::DomainIterator::operator++(int)
-{
-	DomainIterator tmp = *this;
-	++(*this);
-	return tmp;
-}
-
-
-TTRFile::DomainRange::DomainRange(TTRFile* file)
-	: _file(file)
-{
-}
-
-TTRFile::DomainIterator TTRFile::DomainRange::begin()
-{
-	if (!_file->_file.is_open() && !_file->_open())
-	{
-		return DomainIterator(_file, 0, 0, 0);
-	}
 }

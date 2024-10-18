@@ -1,0 +1,11 @@
+{
+  "hot-reload:scan-for-changes": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "R"
+    }
+  ]
+}

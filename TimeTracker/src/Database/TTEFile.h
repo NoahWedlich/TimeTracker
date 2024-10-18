@@ -68,7 +68,7 @@ public:
 	};
 
 public:
-	TTEFile(const std::string& file_path);
+	TTEFile(const std::wstring& file_path);
 	~TTEFile();
 
 	bool add_event(const Date& date, const Event& event);
@@ -79,7 +79,7 @@ public:
 	bool get_last_event(Event& event);
 
 private:
-	std::string _file_path;
+	std::wstring _file_path;
 	std::fstream _file;
 
 private:

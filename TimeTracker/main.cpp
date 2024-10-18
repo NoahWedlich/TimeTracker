@@ -11,6 +11,7 @@
 #include "src/Database/TTRFile.h"
 
 #include "src/Utils/Logger.h"
+#include "src/Utils/PathProvider.h"
 
 #ifdef _DEBUG
 #define MAIN main()
@@ -22,19 +23,21 @@
 
 int MAIN
 {
-	//Logger::set_file_path("TimeTracker.log");
+	PathProvider::use_default_location(PathProvider::DefaultLocation::APPDATA);
+
+	Logger::set_file_path(PathProvider::log_file_path());
 	Logger::set_log_level(LogLevel::LOG_INFO);
 
-	//Database::startup();
+	Database::startup();
 
-	TTRFile ttr_file("TimeTracker.ttr");
+	/*TTRFile ttr_file("TimeTracker.ttr");
 
 	for (auto domain : ttr_file.domains())
 	{
 		Logger::log_info("Domain: {}", domain.name);
-	}
+	}*/
 
-	/*try
+	try
 	{
 		SystemTimeTracker system_time_tracker;
 		RemoteTimeTracker remote_time_tracker;
@@ -63,5 +66,5 @@ int MAIN
 		Logger::log_error("Unhandled exception");
 		Database::shutdown();
 		return 1;
-	}*/
+	}
 }

@@ -168,7 +168,7 @@ bool TTEFile::Event::check_validity() const
 
 // TTEFile
 
-TTEFile::TTEFile(const std::string& file_path)
+TTEFile::TTEFile(const std::wstring& file_path)
 	: _file_path(file_path)
 {
 }
@@ -344,7 +344,7 @@ bool TTEFile::_open()
 
 	if (!_file.is_open())
 	{
-		Logger::log_error("Unable to open file: {}", _file_path);
+		Logger::log_error("Unable to open file: {}", (char*)_file_path.c_str());
 		return false;
 	}
 
@@ -356,7 +356,7 @@ bool TTEFile::_close()
 	_file.close();
 	if (_file.is_open())
 	{
-		Logger::log_error("Unable to close file: {}", _file_path);
+		Logger::log_error("Unable to close file: {}", (char*)_file_path.c_str());
 	}
 
 	return true;
@@ -364,11 +364,16 @@ bool TTEFile::_close()
 
 bool TTEFile::_create()
 {
+	if (!std::filesystem::exists(_file_path))
+	{
+		std::filesystem::create_directories(std::filesystem::path(_file_path).parent_path());
+	}
+
 	_file.open(_file_path, std::ios::out | std::ios::binary);
 
 	if (!_file.is_open())
 	{
-		Logger::log_error("Unable to create file: {}", _file_path);
+		Logger::log_error("Unable to create file: {}", (char*)_file_path.c_str());
 		return false;
 	}
 

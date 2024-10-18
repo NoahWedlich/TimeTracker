@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <string>
 #include <format>
 #include <mutex>
@@ -38,7 +39,7 @@ public:
 	template <typename... Args>
 	static void log_error(const std::string& message, Args&&... args);
 
-	static void set_file_path(const std::string& file_path);
+	static void set_file_path(const std::wstring& file_path);
 
 	static void set_log_level(LogLevel level);
 
@@ -48,7 +49,7 @@ public:
 private:
 	static LogLevel _log_level;
 
-	static std::string _file_path;
+	static std::wstring _file_path;
 
 	static std::mutex _mutex;
 
@@ -98,6 +99,11 @@ void Logger::log(LogLevel level, const std::string& message, Args&&... args)
 
 	if (!_file_path.empty())
 	{
+		if (!std::filesystem::exists(_file_path))
+		{
+			std::filesystem::create_directories(std::filesystem::path(_file_path).parent_path());
+		}
+
 		std::ofstream file(_file_path, std::ios::app);
 		if (file.is_open())
 		{

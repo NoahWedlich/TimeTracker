@@ -1,0 +1,9 @@
+{
+	"id": "obsidian-tracker",
+	"name": "Obsidian TimeTracker",
+	"version": "0.0.1",
+	"minAppVersion": "0.15.0",
+	"description": "A remote tracker for the TimeTracker",
+	"author": "Noah Wedlich",
+	"isDesktopOnly": false
+}

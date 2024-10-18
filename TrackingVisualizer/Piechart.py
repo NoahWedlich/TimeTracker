@@ -19,6 +19,7 @@ def display_piechart(path: str):
     applications: dict[str, timedelta] = {}
     websites: dict[str, timedelta] = {}
     vscode_projects: dict[str, timedelta] = {}
+    obsidian_projects: dict[str, timedelta] = {}
     
     for event in events:
         duration = event[3] - event[2]
@@ -38,6 +39,11 @@ def display_piechart(path: str):
                 vscode_projects[event[1]] += duration
             else:
                 vscode_projects[event[1]] = duration
+        elif event[0] == "Obsidian":
+            if event[1] in obsidian_projects.keys():
+                obsidian_projects[event[1]] += duration
+            else:
+                obsidian_projects[event[1]] = duration
     
     application_labels = []
     application_values = []
@@ -58,19 +64,26 @@ def display_piechart(path: str):
     
     for project, duration in vscode_projects.items():
         vscode_projects_labels.append(project)
-        vscode_projects_values.append(duration.total_seconds())    
+        vscode_projects_values.append(duration.total_seconds())
+        
+    obsidian_projects_labels = []
+    obsidian_projects_values = []
+    
+    for project, duration in obsidian_projects.items():
+        obsidian_projects_labels.append(project)
+        obsidian_projects_values.append(duration.total_seconds())
     
         
-    combined_labels = application_labels + website_labels + vscode_projects_labels
-    combined_parents = ["" for _ in range(len(application_labels))] + ["chrome.exe" for _ in range(len(website_labels))] + ["Code.exe" for _ in range(len(vscode_projects_labels))]
+    combined_labels = application_labels + website_labels + vscode_projects_labels + obsidian_projects_labels
+    combined_parents = ["" for _ in range(len(application_labels))] + ["chrome.exe" for _ in range(len(website_labels))] + ["Code.exe" for _ in range(len(vscode_projects_labels))] + ["Obsidian.exe" for _ in range(len(obsidian_projects_labels))]
     
-    combined_values = application_values + website_values + vscode_projects_values
+    combined_values = application_values + website_values + vscode_projects_values + obsidian_projects_values
     combined_customdata = [seconds_to_time(value) for value in combined_values]
     
     total_duration = sum(combined_values)
     threshold = 0.004 * total_duration
     
-    combined_labels = [label for label, value in zip(combined_labels, combined_values) if value > threshold]
+    combined_labels = [(label if label != None else f"unknown_{value}") for label, value in zip(combined_labels, combined_values) if value > threshold]
     combined_parents = [parent for parent, value in zip(combined_parents, combined_values) if value > threshold]
     combined_customdata = [customdata for customdata, value in zip(combined_customdata, combined_values) if value > threshold]
     combined_values = [value for value in combined_values if value > threshold]

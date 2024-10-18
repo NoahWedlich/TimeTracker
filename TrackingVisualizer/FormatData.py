@@ -19,13 +19,15 @@ def format_data(path: str) -> list[tuple[str, str, datetime, datetime]]:
         "System": None,
         "Activity": None,
         "Browser": None,
-        "VSCode": None
+        "VSCode": None,
+        "Obsidian": None
     }
     
     events: list[tuple[str, str, datetime, datetime]] = []
     
     last_website = None
     last_vscode_project = None
+    last_obsidian_project = None
     
     startup_event = tte_file.events[0]
     
@@ -58,6 +60,9 @@ def format_data(path: str) -> list[tuple[str, str, datetime, datetime]]:
             if current_events["VSCode"] is not None:
                 events.append(("VSCode", current_events["VSCode"][0], current_events["VSCode"][1], datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second, 0)))
                 current_events["VSCode"] = None
+            if current_events["Obsidian"] is not None:
+                events.append(("Obsidian", current_events["Obsidian"][0], current_events["Obsidian"][1], datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second, 0)))
+                current_events["Obsidian"] = None
                 
             current_events["Runtime"] = (entity, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
         
@@ -77,6 +82,9 @@ def format_data(path: str) -> list[tuple[str, str, datetime, datetime]]:
             if current_events["VSCode"] is not None:
                 events.append(("VSCode", current_events["VSCode"][0], current_events["VSCode"][1], datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second, 0)))
                 current_events["VSCode"] = None
+            if current_events["Obsidian"] is not None:
+                events.append(("Obsidian", current_events["Obsidian"][0], current_events["Obsidian"][1], datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second, 0)))
+                current_events["Obsidian"] = None
                 
             current_events["System"] = (entity, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
             
@@ -84,6 +92,8 @@ def format_data(path: str) -> list[tuple[str, str, datetime, datetime]]:
                 current_events["Browser"] = (last_website, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
             elif entity == "Code.exe":
                 current_events["VSCode"] = (last_vscode_project, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
+            elif entity == "Obsidian.exe":
+                current_events["Obsidian"] = (last_obsidian_project, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
                 
         elif domain == "Activity":
             if current_events["Activity"] is not None:
@@ -101,6 +111,9 @@ def format_data(path: str) -> list[tuple[str, str, datetime, datetime]]:
             if current_events["VSCode"] is not None:
                 events.append(("VSCode", current_events["VSCode"][0], current_events["VSCode"][1], datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second, 0)))
                 current_events["VSCode"] = None
+            if current_events["Obsidian"] is not None:
+                events.append(("Obsidian", current_events["Obsidian"][0], current_events["Obsidian"][1], datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second, 0)))
+                current_events["Obsidian"] = None
                 
             current_events["Activity"] = (entity, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
             
@@ -120,9 +133,15 @@ def format_data(path: str) -> list[tuple[str, str, datetime, datetime]]:
             current_events["VSCode"] = (entity, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
             last_vscode_project = entity
             
+        elif domain == "Obsidian":
+            if current_events["Obsidian"] is not None:
+                events.append(("Obsidian", current_events["Obsidian"][0], current_events["Obsidian"][1], datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second, 0)))
+                current_events["Obsidian"] = None
+                
+            current_events["Obsidian"] = (entity, datetime(2000 + event.date.year, event.date.month, event.date.day, event.hour, event.minute, event.second))
+            last_obsidian_project = entity
+            
             
     events = [event for event in events if event[0] != "Runtime" and event[0] != "Activity"] # Comment this line to include runtime events
-    
-    total_runtime = sum([event[3] - event[2] for event in events if event[0] == "Runtime"], timedelta())
     
     return events

@@ -9,6 +9,8 @@
 #include "TTRFile.h"
 #include "TTEFile.h"
 
+#include "../Utils/PathProvider.h"
+
 class Database
 {
 public:
@@ -19,10 +21,8 @@ public:
 	static bool shutdown();
 
 private:
-	static std::string _file_path;
-
-	static TTRFile _registry;
-	static TTEFile _events;
+	static TTRFile* _registry;
+	static TTEFile* _events;
 
 	static std::mutex _mutex;
 };
