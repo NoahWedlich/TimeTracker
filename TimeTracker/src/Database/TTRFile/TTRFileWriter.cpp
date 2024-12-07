@@ -1,11 +1,11 @@
-#include "TTRFile.h"
+#include "TTRFileWriter.h"
 
-TTRFile::TTRFile(const std::wstring& file_path)
+TTRFileWriter::TTRFileWriter(const std::wstring& file_path)
 	: _file_path(file_path), _file()
 {
 }
 
-TTRFile::~TTRFile()
+TTRFileWriter::~TTRFileWriter()
 {
 	if (_file.is_open())
 	{
@@ -13,7 +13,7 @@ TTRFile::~TTRFile()
 	}
 }
 
-bool TTRFile::add_domain(const std::string& domain)
+bool TTRFileWriter::add_domain(const std::string& domain)
 {
 	if (!_file.is_open() && !_open())
 	{
@@ -62,7 +62,7 @@ bool TTRFile::add_domain(const std::string& domain)
 	return true;
 }
 
-TTRFile::domain_id TTRFile::get_domain_id(const std::string& domain)
+TTRFileWriter::domain_id TTRFileWriter::get_domain_id(const std::string& domain)
 {
 	if (!_file.is_open() && !_open())
 	{
@@ -97,12 +97,12 @@ TTRFile::domain_id TTRFile::get_domain_id(const std::string& domain)
 	return -1;
 }
 
-bool TTRFile::domain_exists(const std::string& domain)
+bool TTRFileWriter::domain_exists(const std::string& domain)
 {
 	return get_domain_id(domain) != (domain_id)-1;
 }
 
-bool TTRFile::add_entity(domain_id id, const std::string& entity)
+bool TTRFileWriter::add_entity(domain_id id, const std::string& entity)
 {
 	if (!_file.is_open() && !_open())
 	{
@@ -142,7 +142,7 @@ bool TTRFile::add_entity(domain_id id, const std::string& entity)
 	return true;
 }
 
-TTRFile::entity_id TTRFile::get_entity_id(domain_id id, const std::string& entity)
+TTRFileWriter::entity_id TTRFileWriter::get_entity_id(domain_id id, const std::string& entity)
 {
 	if (!_file.is_open() && !_open())
 	{
@@ -179,12 +179,12 @@ TTRFile::entity_id TTRFile::get_entity_id(domain_id id, const std::string& entit
 	return -1;
 }
 
-bool TTRFile::entity_exists(domain_id id, const std::string& entity)
+bool TTRFileWriter::entity_exists(domain_id id, const std::string& entity)
 {
 	return get_entity_id(id, entity) != (entity_id)-1;
 }
 
-bool TTRFile::_open()
+bool TTRFileWriter::_open()
 {
 	if (!std::filesystem::exists(_file_path))
 	{
@@ -205,7 +205,7 @@ bool TTRFile::_open()
 	return true;
 }
 
-bool TTRFile::_close()
+bool TTRFileWriter::_close()
 {
 	_file.close();
 
@@ -218,7 +218,7 @@ bool TTRFile::_close()
 	return true;
 }
 
-bool TTRFile::_create()
+bool TTRFileWriter::_create()
 {
 	if (!std::filesystem::exists(_file_path))
 	{
@@ -262,7 +262,7 @@ bool TTRFile::_create()
 	return true;
 }
 
-bool TTRFile::_read_info()
+bool TTRFileWriter::_read_info()
 {
 	_file.seekg(0);
 
@@ -290,7 +290,7 @@ bool TTRFile::_read_info()
 	return true;
 }
 
-bool TTRFile::_update_header()
+bool TTRFileWriter::_update_header()
 {
 	_file.seekp(0);
 

@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <cstddef>
 
-#include "../Utils/Logger.h"
+#include "../../Utils/Logger.h"
 
 /*
 * Time Tracker Registry File
@@ -32,15 +32,15 @@
 
 constexpr int DOMAINS_MIN_BLOCK_SIZE = 1024;
 
-class TTRFile
+class TTRFileWriter
 {
 public:
 	using domain_id = uint8_t;
 	using entity_id = uint16_t;
 
 public:
-	TTRFile(const std::wstring& file_path);
-	~TTRFile();
+	TTRFileWriter(const std::wstring& file_path);
+	~TTRFileWriter();
 
 	bool add_domain(const std::string& domain);
 	domain_id get_domain_id(const std::string& domain);

@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <time.h>
 
-#include "../Utils/Logger.h"
+#include "../../Utils/Logger.h"
 
 /*
 * Time Tracker Event File
@@ -24,7 +24,7 @@
 *     }                [num_of_dates]
 */
 
-class TTEFile
+class TTEFileWriter
 {
 public:
 	using encoded_date = uint16_t;
@@ -34,9 +34,7 @@ public:
 		Date();
 		Date(uint8_t year, uint8_t month, uint8_t day);
 
-		uint8_t year;
-		uint8_t month;
-		uint8_t day;
+		uint8_t year, month, day;
 
 		void encode(encoded_date& date) const;
 		static const Date decode(const encoded_date& date);
@@ -68,8 +66,8 @@ public:
 	};
 
 public:
-	TTEFile(const std::wstring& file_path);
-	~TTEFile();
+	TTEFileWriter(const std::wstring& file_path);
+	~TTEFileWriter();
 
 	bool add_event(const Date& date, const Event& event);
 

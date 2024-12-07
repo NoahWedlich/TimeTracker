@@ -1,7 +1,7 @@
 #include "Database.h"
 
-TTRFile* Database::_registry = nullptr;
-TTEFile* Database::_events = nullptr;
+TTRFileWriter* Database::_registry = nullptr;
+TTEFileWriter* Database::_events = nullptr;
 
 std::mutex Database::_mutex{};
 
@@ -24,7 +24,7 @@ bool Database::add_event(const std::string& domain, const std::string& entity, s
 		_registry->add_domain(domain);
 	}
 
-	TTRFile::domain_id domain_id = _registry->get_domain_id(domain);
+	TTRFileWriter::domain_id domain_id = _registry->get_domain_id(domain);
 
 	if (!_registry->entity_exists(domain_id, entity))
 	{
@@ -32,9 +32,9 @@ bool Database::add_event(const std::string& domain, const std::string& entity, s
 		_registry->add_entity(domain_id, entity);
 	}
 
-	TTRFile::entity_id entity_id = _registry->get_entity_id(domain_id, entity);
+	TTRFileWriter::entity_id entity_id = _registry->get_entity_id(domain_id, entity);
 
-	TTEFile::Event last_event;
+	TTEFileWriter::Event last_event;
 	if (_events->get_last_event(last_event))
 	{
 		if (last_event.entity == entity_id)
@@ -44,12 +44,12 @@ bool Database::add_event(const std::string& domain, const std::string& entity, s
 		}
 	}
 
-	TTRFile::domain_id runtime_domain_id = _registry->get_domain_id("Runtime");
-	TTRFile::entity_id startup_entity_id = _registry->get_entity_id(runtime_domain_id, "Startup");
+	TTRFileWriter::domain_id runtime_domain_id = _registry->get_domain_id("Runtime");
+	TTRFileWriter::entity_id startup_entity_id = _registry->get_entity_id(runtime_domain_id, "Startup");
 
 	if (entity_id == startup_entity_id)
 	{
-		TTEFile::Date last_date;
+		TTEFileWriter::Date last_date;
 		if (_events->get_last_date(last_date) && _events->get_last_event(last_event))
 		{
 			std::tm last_time;
@@ -68,8 +68,8 @@ bool Database::add_event(const std::string& domain, const std::string& entity, s
 
 	Logger::log_info("Adding event: {}-{} {}:{}:{}", domain_id, entity_id, time.tm_hour, time.tm_min, time.tm_sec);
 
-	TTEFile::Date date(time.tm_year - 100, time.tm_mon + 1, time.tm_mday);
-	TTEFile::Event event(entity_id, time.tm_hour, time.tm_min, time.tm_sec);
+	TTEFileWriter::Date date(time.tm_year - 100, time.tm_mon + 1, time.tm_mday);
+	TTEFileWriter::Event event(entity_id, time.tm_hour, time.tm_min, time.tm_sec);
 
 	return _events->add_event(date, event);
 }
@@ -78,12 +78,12 @@ bool Database::startup()
 {
 	if (_registry == nullptr)
 	{
-		_registry = new TTRFile(PathProvider::ttr_file_path());
+		_registry = new TTRFileWriter(PathProvider::ttr_file_path());
 	}
 
 	if (_events == nullptr)
 	{
-		_events = new TTEFile(PathProvider::tte_file_path());
+		_events = new TTEFileWriter(PathProvider::tte_file_path());
 	}
 
 	time_t now = time(nullptr);

@@ -8,7 +8,8 @@
 #include "src/Core/ActivityMonitor.h"
 
 #include "src/Database/DataBase.h"
-#include "src/Database/TTRFile.h"
+#include "src/Database/TTRFile/TTRFileReader.h"
+#include "src/Database/TTEFile/TTEFileReader.h"
 
 #include "src/Utils/Logger.h"
 #include "src/Utils/PathProvider.h"
@@ -25,22 +26,40 @@ int MAIN
 {
 	PathProvider::use_default_location(PathProvider::DefaultLocation::APPDATA);
 
-	Logger::set_file_path(PathProvider::log_file_path());
+	//Logger::set_file_path(PathProvider::log_file_path());
 	Logger::set_log_level(LogLevel::LOG_INFO);
 
-	Database::startup();
+	TTRFileReader ttr_reader(PathProvider::ttr_file_path());
+	//TTRFileWriter writer(PathProvider::ttr_file_path());
 
-	/*TTRFile ttr_file("TimeTracker.ttr");
+	TTEFileReader tte_reader(PathProvider::tte_file_path());
+	//TTEFileWriter writer(PathProvider::tte_file_path());
 
-	for (auto domain : ttr_file.domains())
+	//writer.get_domain_id("test");
+
+	for (auto event : tte_reader.events())
 	{
-		Logger::log_info("Domain: {}", domain.name);
-	}*/
+		std::string entity = ttr_reader.get_entity(event.entity);
+		std::string domain = ttr_reader.get_domain(event.entity);
+
+		Logger::log_info("[{}.{}.{} - {}:{}:{}] ({}) {}",
+			event.date.day, event.date.month, event.date.year,
+			event.hour, event.minute, event.second,
+			domain, entity);
+	}
+
+	/*tte_reader._align_buffer_to_start();
+	tte_reader._populate_event_buffer();
+
+	tte_reader._align_buffer_to_end();
+	tte_reader._populate_event_buffer();*/
+
+	/*Database::startup();
 
 	try
 	{
 		SystemTimeTracker system_time_tracker;
-		RemoteTimeTracker remote_time_tracker;
+		RemoteTimeTracker remote_time_tracker; 
 
 		ActivityMonitor::set_timeout(FIVE_MINUTES);
 		ActivityMonitor::start();
@@ -66,5 +85,5 @@ int MAIN
 		Logger::log_error("Unhandled exception");
 		Database::shutdown();
 		return 1;
-	}
+	}*/
 }

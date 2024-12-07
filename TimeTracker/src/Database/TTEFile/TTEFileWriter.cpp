@@ -1,13 +1,13 @@
-#include "TTEFile.h"
+#include "TTEFileWriter.h"
 
 // Date
 
-TTEFile::Date::Date()
+TTEFileWriter::Date::Date()
 	: year(0), month(0), day(0)
 {
 }
 
-TTEFile::Date::Date(uint8_t year, uint8_t month, uint8_t day)
+TTEFileWriter::Date::Date(uint8_t year, uint8_t month, uint8_t day)
 	: year(year), month(month), day(day)
 {
 	if (!check_validity())
@@ -20,7 +20,7 @@ TTEFile::Date::Date(uint8_t year, uint8_t month, uint8_t day)
 	}
 }
 
-void TTEFile::Date::encode(encoded_date& date) const
+void TTEFileWriter::Date::encode(encoded_date& date) const
 {
 	if (!check_validity())
 	{
@@ -33,7 +33,7 @@ void TTEFile::Date::encode(encoded_date& date) const
 	date = (uint16_t(year) << 9) | (uint16_t(month) << 5) | uint16_t(day);
 }
 
-const TTEFile::Date TTEFile::Date::decode(const encoded_date& date)
+const TTEFileWriter::Date TTEFileWriter::Date::decode(const encoded_date& date)
 {
 	Date decoded_date;
 
@@ -53,12 +53,12 @@ const TTEFile::Date TTEFile::Date::decode(const encoded_date& date)
 	return decoded_date;
 }
 
-bool TTEFile::Date::operator==(const Date& other) const
+bool TTEFileWriter::Date::operator==(const Date& other) const
 {
 	return year == other.year && month == other.month && day == other.day;
 }
 
-bool TTEFile::Date::check_validity() const
+bool TTEFileWriter::Date::check_validity() const
 {
 	if (year < 0 || year > 127)
 	{
@@ -83,12 +83,12 @@ bool TTEFile::Date::check_validity() const
 
 // Event
 
-TTEFile::Event::Event()
+TTEFileWriter::Event::Event()
 	: entity(0), hour(0), minute(0), second(0)
 {
 }
 
-TTEFile::Event::Event(entity_id entity, uint8_t hour, uint8_t minute, uint8_t second)
+TTEFileWriter::Event::Event(entity_id entity, uint8_t hour, uint8_t minute, uint8_t second)
 	: entity(entity), hour(hour), minute(minute), second(second)
 {
 	if (!check_validity())
@@ -102,7 +102,7 @@ TTEFile::Event::Event(entity_id entity, uint8_t hour, uint8_t minute, uint8_t se
 	}
 }
 
-void TTEFile::Event::encode(encoded_event& event) const
+void TTEFileWriter::Event::encode(encoded_event& event) const
 {
 	if (!check_validity())
 	{
@@ -115,7 +115,7 @@ void TTEFile::Event::encode(encoded_event& event) const
 	event = (uint32_t(entity) << 17) | (uint32_t(hour) << 12) | (uint32_t(minute) << 6) | uint32_t(second);
 }
 
-const TTEFile::Event TTEFile::Event::decode(const encoded_event& event)
+const TTEFileWriter::Event TTEFileWriter::Event::decode(const encoded_event& event)
 {
 	Event decoded_event;
 
@@ -137,7 +137,7 @@ const TTEFile::Event TTEFile::Event::decode(const encoded_event& event)
 	return decoded_event;
 }
 
-bool TTEFile::Event::check_validity() const
+bool TTEFileWriter::Event::check_validity() const
 {
 	if (entity < 0 || entity > 0x7FFF)
 	{
@@ -168,12 +168,12 @@ bool TTEFile::Event::check_validity() const
 
 // TTEFile
 
-TTEFile::TTEFile(const std::wstring& file_path)
+TTEFileWriter::TTEFileWriter(const std::wstring& file_path)
 	: _file_path(file_path)
 {
 }
 
-TTEFile::~TTEFile()
+TTEFileWriter::~TTEFileWriter()
 {
 	if (_file.is_open())
 	{
@@ -181,7 +181,7 @@ TTEFile::~TTEFile()
 	}
 }
 
-bool TTEFile::add_event(const Date& date, const Event& event)
+bool TTEFileWriter::add_event(const Date& date, const Event& event)
 {
 	if (!_file.is_open() && !_open())
 	{
@@ -248,7 +248,7 @@ bool TTEFile::add_event(const Date& date, const Event& event)
 	return true;
 }
 
-size_t TTEFile::get_num_of_dates()
+size_t TTEFileWriter::get_num_of_dates()
 {
 	if (!_file.is_open() && !_open())
 	{
@@ -274,7 +274,7 @@ size_t TTEFile::get_num_of_dates()
 	return num_of_dates;
 }
 
-bool TTEFile::get_last_event(Event& event)
+bool TTEFileWriter::get_last_event(Event& event)
 {
 	size_t num_of_dates = get_num_of_dates();
 
@@ -307,7 +307,7 @@ bool TTEFile::get_last_event(Event& event)
 	return true;
 }
 
-bool TTEFile::get_last_date(Date& date)
+bool TTEFileWriter::get_last_date(Date& date)
 {
 	size_t num_of_dates = get_num_of_dates();
 
@@ -330,7 +330,7 @@ bool TTEFile::get_last_date(Date& date)
 	return true;
 }
 
-bool TTEFile::_open()
+bool TTEFileWriter::_open()
 {
 	if (!std::filesystem::exists(_file_path))
 	{
@@ -351,7 +351,7 @@ bool TTEFile::_open()
 	return true;
 }
 
-bool TTEFile::_close()
+bool TTEFileWriter::_close()
 {
 	_file.close();
 	if (_file.is_open())
@@ -362,7 +362,7 @@ bool TTEFile::_close()
 	return true;
 }
 
-bool TTEFile::_create()
+bool TTEFileWriter::_create()
 {
 	if (!std::filesystem::exists(_file_path))
 	{
@@ -387,7 +387,7 @@ bool TTEFile::_create()
 	return true;
 }
 
-const TTEFile::_DateBlock TTEFile::_last_date_block()
+const TTEFileWriter::_DateBlock TTEFileWriter::_last_date_block()
 {
 	_DateBlock last_date_block;
 	bool was_open = _file.is_open();

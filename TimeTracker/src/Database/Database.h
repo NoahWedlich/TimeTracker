@@ -6,8 +6,8 @@
 
 #include <mutex>
 
-#include "TTRFile.h"
-#include "TTEFile.h"
+#include "TTRFile/TTRFileWriter.h"
+#include "TTEFile/TTEFileWriter.h"
 
 #include "../Utils/PathProvider.h"
 
@@ -21,8 +21,8 @@ public:
 	static bool shutdown();
 
 private:
-	static TTRFile* _registry;
-	static TTEFile* _events;
+	static TTRFileWriter* _registry;
+	static TTEFileWriter* _events;
 
 	static std::mutex _mutex;
 };

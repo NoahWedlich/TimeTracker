@@ -18,13 +18,13 @@
     <ClInclude Include="src\Utils\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Database\TTEFile.h">
+    <ClInclude Include="src\Database\TTEFile\TTEFileWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\SystemTimeTracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Database\TTRFile.h">
+    <ClInclude Include="src\Database\TTRFile\TTRFileWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Database\Database.h">
@@ -42,6 +42,24 @@
     <ClInclude Include="src\Utils\PathProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Database\TTEFile\TTEFileReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Database\TTRFile\TTRFileReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\StringConverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\Filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Database\TTEFile\TTEFileDate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Database\TTEFile\TTEFileEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Utils\Logger.cpp">
@@ -50,13 +68,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Database\TTEFile.cpp">
+    <ClCompile Include="src\Database\TTEFile\TTEFileWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\SystemTimeTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Database\TTRFile.cpp">
+    <ClCompile Include="src\Database\TTRFile\TTRFileWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Database\Database.cpp">
@@ -69,6 +87,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utils\PathProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Database\TTRFile\TTRFileReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\StringConverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Database\TTEFile\TTEFileDate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Database\TTEFile\TTEFileReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Database\TTEFile\TTEFileEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

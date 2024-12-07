@@ -132,23 +132,34 @@
     <ClInclude Include="src\Core\ActivityMonitor.h" />
     <ClInclude Include="src\Core\RemoteTimeTracker.h" />
     <ClInclude Include="src\Database\Database.h" />
+    <ClInclude Include="src\Database\TTEFile\TTEFileReader.h" />
+    <ClInclude Include="src\Database\TTRFile\TTRFileReader.h" />
+    <ClInclude Include="src\Utils\Filter.h" />
     <ClInclude Include="src\Utils\httplib.h" />
     <ClInclude Include="src\Utils\Logger.h" />
-    <ClInclude Include="src\Database\TTEFile.h" />
+    <ClInclude Include="src\Database\TTEFile\TTEFileWriter.h" />
     <ClInclude Include="src\Core\SystemTimeTracker.h" />
-    <ClInclude Include="src\Database\TTRFile.h" />
+    <ClInclude Include="src\Database\TTRFile\TTRFileWriter.h" />
     <ClInclude Include="src\Utils\PathProvider.h" />
+    <ClInclude Include="src\Utils\StringConverter.h" />
+    <ClInclude Include="src\Database\TTEFile\TTEFileDate.h" />
+    <ClInclude Include="src\Database\TTEFile\TTEFileEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\ActivityMonitor.cpp" />
     <ClCompile Include="src\Core\RemoteTimeTracker.cpp" />
     <ClCompile Include="src\Database\Database.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\Database\TTEFile\TTEFileReader.cpp" />
+    <ClCompile Include="src\Database\TTRFile\TTRFileReader.cpp" />
     <ClCompile Include="src\Utils\Logger.cpp" />
-    <ClCompile Include="src\Database\TTEFile.cpp" />
+    <ClCompile Include="src\Database\TTEFile\TTEFileWriter.cpp" />
     <ClCompile Include="src\Core\SystemTimeTracker.cpp" />
-    <ClCompile Include="src\Database\TTRFile.cpp" />
+    <ClCompile Include="src\Database\TTRFile\TTRFileWriter.cpp" />
     <ClCompile Include="src\Utils\PathProvider.cpp" />
+    <ClCompile Include="src\Utils\StringConverter.cpp" />
+    <ClCompile Include="src\Database\TTEFile\TTEFileDate.cpp" />
+    <ClCompile Include="src\Database\TTEFile\TTEFileEvent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
